@@ -19,7 +19,6 @@ import org.embeddedt.archaicfix.helpers.SoundDeviceThread;
 import java.lang.management.ManagementFactory;
 
 public class ClientProxy extends CommonProxy {
-    SoundDeviceThread soundThread = null;
     public static volatile boolean soundSystemReloadLock = false;
     @Override
     public void preinit() {
@@ -52,16 +51,6 @@ public class ClientProxy extends CommonProxy {
         if(!event.isCanceled() && event.gui instanceof GuiMainMenu && gameStartTime == -1) {
             gameStartTime = ManagementFactory.getRuntimeMXBean().getUptime() / 1000f;
             ArchaicLogger.LOGGER.info("The game loaded in " + gameStartTime + " seconds.");
-        }
-    }
-
-    @SubscribeEvent
-    public void onSoundSetup(SoundLoadEvent event) {
-        soundSystemReloadLock = false;
-        if(soundThread == null) {
-            ArchaicLogger.LOGGER.info("Starting sound device thread");
-            soundThread = new SoundDeviceThread();
-            soundThread.start();
         }
     }
 
